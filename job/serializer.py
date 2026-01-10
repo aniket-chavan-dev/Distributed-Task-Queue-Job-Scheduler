@@ -24,18 +24,34 @@ class JobSerializer(serializers.ModelSerializer):
         ]
 
     def validate_payload(self, value):
-        #checks only that the payload must be valid json
         if value is not None and not isinstance(value, dict):
             raise serializers.ValidationError(
                 "Payload must be a valid JSON object"
             )
         return value
 
+    def validate(self, attrs):
+        job_type = attrs.get("job_type")
+        payload = attrs.get("payload") or {}
+
+        if job_type == "email":
+            required = {"to", "subject", "body"}
+            missing = required - payload.keys()
+            if missing:
+                raise serializers.ValidationError(
+                    f"Missing fields for email job: {missing}"
+                )
+
+        return attrs
+
     def create(self, validated_data):
-        request = self.context.get('request')
-        validated_data['user'] = request.user
+        request = self.context.get("request")
+        if not request or not request.user.is_authenticated:
+            raise serializers.ValidationError("Authentication required")
+
+        validated_data["user"] = request.user
         return super().create(validated_data)
-    
+
 
 class JobResultSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,6 +66,7 @@ class JobResultSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'id',
+            'job',
             'completed_at',
         ]
 
