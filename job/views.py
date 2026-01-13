@@ -24,6 +24,7 @@ class JobViewSet(
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = JobSerializer
     pagination_class = JobPagination
+    throttle_classes = [] 
 
     #filtering query is status and type
     filter_backends = [DjangoFilterBackend, OrderingFilter]

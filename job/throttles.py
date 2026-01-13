@@ -1,4 +1,4 @@
-from rest_framework.throttling import UserRateThrottle
+from rest_framework.throttling import ScopedRateThrottle
 
-class JobCreateThrottle(UserRateThrottle):
+class JobCreateThrottle(ScopedRateThrottle):
     scope = "job_create"

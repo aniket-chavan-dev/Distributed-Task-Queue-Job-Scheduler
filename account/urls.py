@@ -3,7 +3,7 @@ from .views import UserRagistration,UserLogin,PasswordResetRequestView,PasswordR
 
 
 urlpatterns = [
-    path("ragister/",UserRagistration.as_view()),
+    path("register/",UserRagistration.as_view()),
     path("login/",UserLogin.as_view()),
     path('password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),
     path('password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

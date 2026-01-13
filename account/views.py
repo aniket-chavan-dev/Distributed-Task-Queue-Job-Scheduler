@@ -18,7 +18,7 @@ class UserRagistration(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             token = get_tokens_for_user(user)
-            return Response({'msg' : 'Ragistration successfull','access-token' : token['access'],'refresh-token' : token['refresh'],'user' : {
+            return Response({'msg' : 'Ragistration successfull','access_token' : token['access'],'refresh_token' : token['refresh'],'user' : {
                 'email' : user.email,
                 'id' : user.id
             }},status=status.HTTP_201_CREATED)
@@ -33,7 +33,7 @@ class UserLogin(APIView):
         if user is not None:
             token = get_tokens_for_user(user)
             user_ser = UserSerializer(user)
-            return Response({'msg' : 'login successful','access-token' : token['access'],'refresh-token' : token['refresh'], 'user' : user_ser.data },status=status.HTTP_200_OK)
+            return Response({'msg' : 'login successful','access_token' : token['access'],'refresh_token' : token['refresh'], 'user' : user_ser.data },status=status.HTTP_200_OK)
         return Response({"msg" : "invalid email and password"},status=status.HTTP_400_BAD_REQUEST)
 
 class UserDetailView(APIView):
